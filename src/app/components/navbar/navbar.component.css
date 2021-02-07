@@ -1,0 +1,15 @@
+.navbar a {
+    margin: 0 16px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar a.active {
+    border-bottom: 2px solid #fff;
+    margin-top: 2px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

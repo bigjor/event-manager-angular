@@ -1,0 +1,57 @@
+
+.calendar {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.calendar >>> .item-day {
+    width: calc(100% / 7);
+    height: calc((100vh - 56px - 40px) / 6);
+    max-height: calc(100vh / 6);
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.controller {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 1em;
+    height: 50px;
+}
+
+.calendar >>> .item-day >>> .selected, .calendar >>> .item-day >>> .current, .calendar >>> .item-day >>> .number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: .5em auto;
+    padding: .2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 100px;
+}
+
+.calendar >>> .item-day >>> .selected {
+    color: #fff;
+    background: #1F92F2 !important;
+}
+
+.calendar >>> .item-day >>> .current {
+    color: #fff;
+    background: #333;
+}
+
+.calendar >>> .item-day >>> .event {
+    background: coral;
+    max-height: 20px;
+    padding: .2em .6em;
+    margin: .2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 4px;
+    color: #fff;
+    font-size: .7em;
+    text-align: left;
+}

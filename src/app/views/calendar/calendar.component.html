@@ -1,0 +1,23 @@
+<div class="d-flex">
+    <button mat-icon-button color="white" (click)="prevMonth()">
+        <mat-icon>chevron_left</mat-icon>
+    </button>
+
+    <span>{{ selected | formatDate }}</span>
+
+    <button mat-icon-button color="white" (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+    </button>
+</div>
+<div id="calendar" class="calendar">
+    <div class="item-day" *ngFor="let spacer of daysSpacer()"></div>
+    <div class="item-day" *ngFor="let day of daysInMonth()" (click)="selectDay(day);">
+        <div [ngClass]="{'selected' : isSelected(day), 'current': isToday(day) }" class="number">
+            {{ day }}
+        </div>
+
+        <div class="event" *ngFor="let event of getEvents(day, selected.getMonth(), selected.getFullYear())" [ngStyle]="{'background': event.color}" [routerLink]="['/event', event.id]">
+            {{ event.title || 'Sin titulo' }}
+        </div>
+    </div>
+</div>
