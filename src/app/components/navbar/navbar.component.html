@@ -4,9 +4,9 @@
     <a class="nav-link" [routerLink]="['calendar']" [routerLinkActive]="['active']" *ngIf="isLogged()">Calendario</a>
     <span class="spacer"></span>
     
-    <button mat-icon-button class="add-icon" aria-label="add" [routerLink]="['event']">
+    <button mat-icon-button class="add-icon" aria-label="add" (click)="addEvent()" *ngIf="isLogged()">
         <mat-icon>add</mat-icon>
     </button>
-    <a class="nav-link" (click)="test()">test</a>
+    <!-- <a class="nav-link" (click)="test()">test</a> -->
     <a class="nav-link" (click)="logout()" *ngIf="isLogged()">Logout</a>
 </mat-toolbar>

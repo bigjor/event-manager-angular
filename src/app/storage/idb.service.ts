@@ -41,11 +41,11 @@ export class IdbService {
     
   }
 
-  exec(method, ...args): void | any {
+  async exec(method, ...args): Promise<void | any | any[]> {
     for (let table of Object.values(this.TABLES)) {
       let controller = new table.entity(table.instance);
       if (controller[method]) 
-        return controller[method](...args);
+        return await controller[method](...args);
     }
   }
 

@@ -30,8 +30,8 @@ export class AppService {
     localStorage.removeItem(key)
   }
 
-  idbExecMethod(method, ...args): void | object {
-    this._idbService.exec(method, ...args)
+  async idbExecMethod(method, ...args): Promise<void | object | any[]> {
+    return await this._idbService.exec(method, ...args)
   }
 
 }

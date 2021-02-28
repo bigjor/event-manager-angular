@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
 
   user: User = { name: '', pass: '' };
   hide: boolean = true;
+  remember: boolean = false;
 
   constructor(
     private _snackBar: MatSnackBar, 
@@ -21,27 +22,33 @@ export class LoginComponent implements OnInit {
     private _route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    window['app'] = this
+    
+    this.user = this._loginService.isRemembered();
+    if (this.user.name || this.user.pass) {
+      this.remember = true;
+    }
   }
 
   onError(error: string): void {
     this._snackBar.open(error, '', {
       panelClass: ['mat-primary'],
-      duration: 30000
+      duration: 3000
     });
   }
 
   login() {
+    this._loginService.remember(this.user, this.remember)
     this._loginService.login(this.user).subscribe(
       value => {
         console.log("Login:", value)
-        if (value) 
-          this._router.navigate(['/calendar'], { relativeTo: this._route });
+        if (value) this._router.navigate(['/calendar'], { relativeTo: this._route });
       },
       error => {
         let msg = typeof error?.error?.error == 'string' 
-                      ? `Error: ${error?.error?.error}` 
-                      : typeof error?.error == 'string' 
-                        ? `Error: ${error?.error}` : 'Error no identificado'
+                    ? `Error: ${error?.error?.error}` 
+                    : typeof error?.error == 'string' 
+                      ? `Error: ${error?.error}` : 'Error no identificado'
         this.onError(msg)
       }
     );

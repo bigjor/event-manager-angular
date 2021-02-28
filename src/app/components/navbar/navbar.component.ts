@@ -36,4 +36,8 @@ export class NavbarComponent implements OnInit {
       date: 'Tue Jan 12 2021 00:00:00 GMT+0100 (hora estándar de Europa central)'
     })
   }
+
+  addEvent(): void {
+    this._router.navigate(['/event'], { relativeTo: this._route });
+  }
 }

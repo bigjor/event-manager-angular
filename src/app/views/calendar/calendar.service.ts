@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { AppService } from 'src/app/app.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
 
-  constructor() { }
+  constructor(private _appService: AppService) { }
 
   firstDayOfWeek(year: number, month: number): number {
     let number = new Date(year, month-1, 1).getDay()
@@ -33,28 +34,6 @@ export class CalendarService {
         return v.toString(16);
     });
   }
-
-  // nextMonth(date: Date): Date {
-  //   let days = this.daysInMonth(date.getMonth() + 1, date.getFullYear())
-
-  //   let newTime = date.getTime() + (days*24*60*60*1000)
-
-  //   // date.setDate(date.getTime() + (days*24*60*60*1000))
-
-
-  //   return new Date(newTime)
-  // }
-
-  // prevMonth(date: Date): Date {
-  //   let days = this.daysInMonth(date.getMonth() + 1, date.getFullYear())
-
-  //   let newTime = date.getTime() - ((1*24*60*60*1000) * days)
-
-  //   // date.setDate(date.getTime() + (days*24*60*60*1000))
-
-
-  //   return new Date(newTime)
-  // }
 
   nextMonth(date: Date) {
     let currentMonth = date.getMonth()
@@ -88,5 +67,9 @@ export class CalendarService {
     }
 
     return new Date(year, month, 1)
+  }
+
+  async getEvents() {
+    return await this._appService.idbExecMethod('getEvents');
   }
 }

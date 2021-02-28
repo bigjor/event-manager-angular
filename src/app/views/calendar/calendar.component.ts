@@ -9,58 +9,21 @@ import { IdbService } from 'src/app/storage/idb.service';
 })
 export class CalendarComponent implements OnInit {
 
-  events: Event[] = [
-    {
-        date: new Date(Date.now()),
-        color: 'red',
-        title: 'TODAY',
-        id: this._calendarService.uuidv4()
-    },
-    {
-        date: new Date(Date.now()),
-        color: this._calendarService.randomColor(),
-        title: 'HANNI',
-        id: this._calendarService.uuidv4()
-    },
-    {
-        date: new Date(Date.now()),
-        color: 'red',
-        title: 'TODAY',
-        id: this._calendarService.uuidv4()
-    },
-    {
-        date: new Date(Date.now()),
-        color: this._calendarService.randomColor(),
-        title: 'HANNI',
-        id: this._calendarService.uuidv4()
-    },
-    {
-        date: new Date(Date.now()),
-        color: 'red',
-        title: 'TODAY',
-        id: this._calendarService.uuidv4()
-    },
-    {
-        date: new Date(Date.now()),
-        color: this._calendarService.randomColor(),
-        title: 'HANNI',
-        id: this._calendarService.uuidv4()
+    events: Event[] = [];
+    today: Date = new Date(Date.now())
+    current: Date = this.today
+    selected: Date = this.getSelectedDay()
+    eventSelected = null
+    newEvents = null
+
+    constructor(private _calendarService: CalendarService, private _idbService: IdbService) {
+        
     }
-  ]
-  today: Date = new Date(Date.now())
-  current: Date = this.today
-  selected: Date = this.getSelectedDay()
-  eventSelected = null
-  newEvents = null
 
-  constructor(private _calendarService: CalendarService, private _idbService: IdbService) {
-      
-  }
-
-  ngOnInit(): void {
-    window['app'] = this
-
-  }
+    ngOnInit(): void {
+        window['app'] = this
+        this.loadEvents()
+    }
 
     firstDayOfWeek(): number {
         return this._calendarService.firstDayOfWeek(this.selected.getFullYear(), this.selected.getMonth()+1)
@@ -120,13 +83,14 @@ export class CalendarComponent implements OnInit {
             return this.events
 
         return this.events.filter(item => {
+            let date = new Date(item.date)
             if (day && month != undefined && year) 
-                return  this.isSameDate(item.date, new Date(year, month, day))
+                return  this.isSameDate(date, new Date(year, month, day))
             if (!day && month && year) 
-                return  item.date.getMonth()    == month &&
-                        item.date.getFullYear() == year
+                return  date.getMonth()    == month &&
+                        date.getFullYear() == year
             if (!day && !month && year)
-                return  item.date.getFullYear() == year
+                return  date.getFullYear() == year
 
             return true
         })
@@ -139,126 +103,16 @@ export class CalendarComponent implements OnInit {
     getNewId() {
         return this._idbService.exec('getEvents')
     }
-
-  draw() {
-    let element = document.querySelector('#calendar')
-      if (!element) return
-      let year = this.selected.getFullYear()
-      let month = this.selected.getMonth() + 1
-      
-      // DRAW DAY BOX
-      /* ----------------------- REF 15 | Modificar el nodes ---------------------- */
-      // for (let day = 1; day <= this.daysInMonth(); day++) {
-        for (let day = 1; day <= 28; day++) {
-          let date = new Date(year, month - 1, day)
-          let container = document.createElement('div')
-          container.setAttribute('ref', this.dateToString(date))
-        //   let number = document.createElement('div')
-        //   number.className = 'number'
-        //   number.appendChild(document.createTextNode(day.toString()))
-        //   if (this.isSameDate(date, this.selected))
-        //       number.className = 'selected'
-        //   if (this.isSameDate(date))
-        //       number.className = 'current'
-        //   container.className = 'item-day'
-        //   container.appendChild(number)
-
-          /* ---------------------------- REF 6 | Iterables --------------------------- */
-        //   for(let ev of this.events) {
-        //       if (!this.isSameDate(date, ev.object.date)) continue;
-        //       let divEvent = document.createElement('div')
-        //       divEvent.className = 'event'
-        //       divEvent.style.background = ev.object.color
-        //       divEvent.innerText = ev.object.title
-        //       divEvent.addEventListener('click', () => {
-        //           // window.app.eventReactive.event = ev
-
-        //       })
-        //       container.appendChild(divEvent)
-        //   }
-
-          /* ------------------------ REF 11 | Funcions fletxa ------------------------ */
-        //   container.addEventListener('click', () => {
-        //       this.selected = new Date(year, month - 1, day)
-        //       Object.values(container.parentElement.children).forEach(item => {
-        //           if (item.getAttribute('ref')) 
-        //               if (item.getAttribute('ref') == this.dateToString(date) && this.isSameDate(date))
-        //                   item.children[0].className = 'current'
-        //               else if (item.getAttribute('ref') == container.getAttribute('ref'))
-        //                   item.children[0].className = 'selected'
-        //               else
-        //                   item.children[0].className = 'number'
-        //       })
-        //   })
-
-          element.appendChild(container)
-
-      }
-  }
     
-
-//   nextMonth() {
-//       let currentMonth = this.selected.getMonth()
-//       let currentYear = this.selected.getFullYear()
-//       let month = null
-//       let year = null
-      
-//       if (currentMonth == 11) {
-//           year = currentYear + 1
-//           month = 0
-//       } else {
-//           year = currentYear
-//           month = currentMonth + 1
-//       }
-
-//       /* ---------------------- REF 13 | Objectes predefinits --------------------- */
-//       this.selected = new Date(year, month, 1)
-//       this.draw()
-
-//       return this.selected
-//   }
     nextMonth() {
-        // let currentMonth = this.selected.getMonth()
-        // let currentYear = this.selected.getFullYear()
-        // let month = null
-        // let year = null
-        
-        // if (currentMonth == 11) {
-        //     year = currentYear + 1
-        //     month = 0
-        // } else {
-        //     year = currentYear
-        //     month = currentMonth + 1
-        // }
-
-        // /* ---------------------- REF 13 | Objectes predefinits --------------------- */
-        // this.selected = new Date(year, month, 1)
-        // // this.draw()
-
-        // return this.selected
         let newDate = this._calendarService.nextMonth(this.selected)
         this.selected = newDate
     }
 
-
-  prevMonth() {
-    //   let currentMonth = this.selected.getMonth()
-    //   let currentYear = this.selected.getFullYear()
-    //   let month = null
-    //   let year = null
-
-    //   if (currentMonth == 0) {
-    //       year = currentYear - 1
-    //       month = 11
-    //   } else {
-    //       year = currentYear
-    //       month = currentMonth - 1
-    //   }
-
-    //   this.selected = new Date(year, month, 1)
-    //   this.draw()
-    this.selected = this._calendarService.prevMonth(this.selected)
-  }
+    prevMonth() {
+        let newDate = this._calendarService.prevMonth(this.selected)
+        this.selected = newDate
+    }
 
   /* ---------------------- REF 12 | Template literals ---------------------- */
   dateToString(date, delimiter = '-', reverse = false) {
@@ -270,69 +124,31 @@ export class CalendarComponent implements OnInit {
       return `${day < 10 ? '0' + day : day}${delimiter}${month < 10 ? '0' + month : month}${delimiter}${date.getFullYear()}`
   }
 
-  addEvent(event) {
 
-      /* ------------------------- REF 18 | Destructuring ------------------------- */
-      let { title, description, date, color } = event
+    setSelected(date) {
+        let dateObj = new Date()  
+        date.split('-').forEach((item, index) => {
+            if (index == 0) dateObj.setFullYear(parseInt(item))
+            if (index == 1) dateObj.setMonth(parseInt(item) - 1)
+            if (index == 2) dateObj.setDate(parseInt(item))
+        })
+        this.selected = dateObj
+        return this.selected
+    }
 
-      color = color == 'random' ? this.randomColor() : color 
-      
-      // let newEvent = new CustomItemEvent(title, description, date, color)
-      
-      // window.localdb.createEvent(this.uuidv4(), newEvent)
-      this.updateEvents()
-  }
+    getToday() {
+        return this.today
+    }
 
-  editEvent(id, event) {
+    getSelected() {
+        return this.selected
+    }
 
-      let { title, description, date, color } = event
-      color = color == 'random' ? this.randomColor() : color 
-      
-      // let modifiedEvent = new CustomItemEvent(title, description, date, color)
-      
-      // window.localdb.createEvent(id, modifiedEvent)
-      this.updateEvents()
-  }
 
-  setSelected(date) {
-      let dateObj = new Date()  
-      date.split('-').forEach((item, index) => {
-          if (index == 0) dateObj.setFullYear(parseInt(item))
-          if (index == 1) dateObj.setMonth(parseInt(item) - 1)
-          if (index == 2) dateObj.setDate(parseInt(item))
-      })
-      this.selected = dateObj
-      return this.selected
-  }
-
-  getToday() {
-      return this.today
-  }
-
-  getSelected() {
-      return this.selected
-  }
-
-  updateEvents() {
-      // let getEvents = window.localdb.getEventAllObject()
-      // getEvents.onsuccess = () => {
-      //     this.events = getEvents.result
-      //     this.draw()
-      // }
-  }
-
-  uuidv4() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-          return v.toString(16);
-      });
-  }
-
-  randomColor() {
-      return '#xxxxxx'.replace(/[x]/g, function(c) {
-          let r = Math.random() * 16 | 0, v = r;
-          return v.toString(16);
-      });
-  }
+    async loadEvents() {
+        let events =  await this._calendarService.getEvents()
+        console.log(events)
+        this.events = <Event[]> events
+    }
 
 }

@@ -16,7 +16,7 @@
         </mat-form-field>
 
         <div class="align-right checkbox">
-            <mat-checkbox>Recordar</mat-checkbox>
+            <mat-checkbox [(ngModel)]="remember" name="remember">Recordar</mat-checkbox>
         </div>
 
         <button mat-raised-button (click)="login()" class="full-width" color="accent">Acceder</button>

@@ -1,24 +1,42 @@
-<!-- <div class="form-center">
-    <form class="form-login">
-        <h2>Login</h2>
+<div class="form-center">
+    <form novalidate [formGroup]="formEvent" class="form-event" (ngSubmit)="save()">
+        <h2>Evento</h2>
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Usuario</mat-label>
-            <input matInput [(ngModel)] = "user.name" name="name">
+            <mat-label>Titulo</mat-label>
+            <input matInput formControlName="title" name="name">
         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Contraseña</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)] = "user.pass" name="pass">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="description" name="description"></textarea>
         </mat-form-field>
 
-        <div class="align-right checkbox">
-            <mat-checkbox>Recordar</mat-checkbox>
-        </div>
+        <mat-form-field class="full-width" appearance="fill" [color]="getSelectedColor()">
+            <mat-label>Color</mat-label>
+            <mat-select formControlName="color">
+                <mat-option value="random" selected>Random</mat-option>
+                <mat-option value="blue">Azul</mat-option>
+                <mat-option value="green">Verde</mat-option>
+                <mat-option value="red">Rojo</mat-option>
+                <mat-option value="orange">Naranja</mat-option>
+                <mat-option value="yellow">Amarillo</mat-option>
+                <mat-option value="black">Negro</mat-option>
+                <mat-option value="purple">Violeta</mat-option>
+                
+                <mat-option value="primary">Primary</mat-option>
+                <mat-option value="accent">Accent</mat-option>
+                <mat-option value="warn">Warn</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <button mat-raised-button (click)="login()" class="full-width" color="accent">Acceder</button>
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Elegir fecha</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" name="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" class="full-width" color="accent" [ngStyle]="{'background-color': getSelectedColor()}">Guardar</button>
     </form>
-</div> -->
+</div>

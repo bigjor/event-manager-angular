@@ -38,8 +38,10 @@ export class TableEvents {
     return events
   }
 
-  async getEvent(id) {
-    return await this.instance.get(id);
+  async getEvent(id: number | string) {
+    const event = await this.instance
+      .get(typeof id == 'string' ? parseInt(id) : id);
+    return event
   }
 
   clear() {

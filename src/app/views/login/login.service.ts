@@ -17,8 +17,6 @@ export class LoginService {
 
   endpoint: string = 'http://localhost:3000/login';
 
-  
-
   constructor(private http: HttpClient, private _appService: AppService) { }
 
   login(user: User): Observable<LoginResponse<boolean>> {
@@ -31,6 +29,26 @@ export class LoginService {
         }
         return response.logged
       }))
+  }
+
+  remember(user: User, condition: boolean): void {
+    if (condition) {
+      localStorage.setItem('name', user.name)
+      localStorage.setItem('pass', user.pass)
+    } else {
+      localStorage.removeItem('name')
+      localStorage.removeItem('pass')
+    }
+  }
+
+  isRemembered(): User {
+    let user = { name: '', pass: '' }
+    let name = localStorage.getItem('name')
+    let pass = localStorage.getItem('pass')
+    if (name) user.name = name
+    if (pass) user.pass = pass
+    return Object.keys(user).length > 0 ? user : null
+
   }
 
 }
